@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django_prueba.prueba1.apps.modulo1.models import Modulo1
+from .models import Modulo1
 
 # ------- CBV -----------------
 class CrearRegistro(CreateView):

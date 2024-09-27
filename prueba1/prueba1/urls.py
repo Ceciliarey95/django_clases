@@ -23,5 +23,6 @@ from .views import HomeView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomeView.as_view() , name='index' ),
-    path("modulo1/", include('apps.modulo1.urls'))
+    path("modulo1/", include('apps.modulo1.urls')),
+    path("libros/", include('apps.libros.urls')),
 ]
