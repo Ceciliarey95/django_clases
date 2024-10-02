@@ -16,7 +16,4 @@ urlpatterns = [
     path("eliminar_libro/<int:pk>", EliminarLibro.as_view(), name= 'eliminar_libro'),
     path("listar_libros/", ListarLibros.as_view(), name='listar_libros')
 
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
-urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+]

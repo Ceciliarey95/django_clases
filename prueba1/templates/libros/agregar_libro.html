@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1>Agregar Libro</h1>
+    <p>Ingrese los datos y presione el boton de guardar</p>
+    {{ form.as_p }}
+   
+    <input type="submit" class="btn btn-primary" value="Guardar">
+</form>
+
+{% endblock %}
