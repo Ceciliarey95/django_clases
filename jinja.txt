@@ -1,0 +1,75 @@
+3 elementos importantes:
+
+Variables {{ variable }}
+Instrucciones {% instrucción %}
+Comentarios {# comentarios #}
+#----------------------------------------------------
+Uso de variables
+Si nosotros así lo deseamos podemos enviar objetos a nuestro templates.
+
+<h2>Hola {{ username }} </h2>
+<p>
+    Te encuentras en el curso {{ course.title }}
+</p>
+#----------------------------------------------------
+Uso de condiciones
+{% if user_is_admin %}
+    <a href="{{ url_for('admin') }}">admin</a>
+{% else %}
+    <p>No cuentas con los permisos suficientes</p>
+{% endif %}
+
+{% if user_is_admin and user.permission_level == 5 %}
+    <a href="{{ url_for('admin') }}">admin</a>
+{% endif %}
+#----------------------------------------------------
+Uso de ciclos
+El único ciclo permitido por el motor Jinja2 es el ciclo for.
+
+<ul>
+    {% for val in [1,2,3,4,5,6,7,8,9] %}
+        <li> {{ val }} </li>
+    {% endfor %}
+</ul>
+
+Dentro del ciclo podemos acceder a diferentes atributos del objeto loop.
+
+index: Interacción actual. El valor comienza en 1
+index0: Iteración actual. El valor comienza en 0 (Ideal si deseamos replicar el comportamiento de la función enumerate)
+first: Valor verdadero si nos encontramos en la primera iteración.
+last: Valor verdadero si nos encontramos en la última iteración.
+length: Número de iteraciones.
+Ejemplo
+
+<ul>
+    {% for val in [1,2,3,4,5,6,7,8,9] %}
+        <li> {{ loop.index0 }} - {{ val }} </li>
+    {% endfor %}
+</ul>           
+#--------------------------------------------------------------------
+#__________________________________________________________________________________________________
+
+   
+La variable TEMPLATES es una lista, donde cada elemento es un diccionario con los datos de configuración de nuestro gestor de plantillas:
+
+BACKEND
+Esta es la clase que abstrae nuestro código en Django para poder usar  el gestor de plantillas de forma transparente. Por decirlo de alguna  manera es el "puente" que enlaza nuestro proyecto y el gestor de  plantillas. Para Jinja2 la clase que utilizaremos es django.template.backends.jinja2.Jinja2
+
+DIRS
+Lista con los directorios donde se guardarán las plantillas que vamos  analizar con el gestor de plantillas. Si Django no encuentra la  plantilla en la primera carpeta de la lista, entonces busca en la  siguiente carpeta y así hasta que encuentre la plantilla o hasta que  registre todo los directorios.
+
+APP_DIRS
+Esta opción está pensada para las aplicaciones externas que se  instalan en Django, porque permite buscar plantillas dentro de la  carpeta de la aplicación, en una subcarpeta llamada templates.  Es importante tener esta opción siempre a True ya que sino,  algunas aplicaciones de Django no funcionarán de manera correcta.
+
+Por ejemplo el panel de administración de nuestra página web. Este es una aplicación llamada django.contrib.admin que se encuentra en el directorio ruta_a_la_libreria_de_django/contrib/admin. Verá que dentro de esta carpeta hay una llamada templates. Esta contiene las plantillas del panel de administración que utiliza Django.
+
+OPTIONS
+Es un diccionario con las  opciones de configuración de nuestro  gestor de plantillas. Cada gestor de plantillas tiene su propio conjunto  de opciones. En caso de Jinja2, las opciones son:
+
+environment Ruta hacia  una función que añadirá filtros y funciones propias a la sintaxis de  Jinja2. Más adelante veremos como crearla, ya que es muy recomendable  añadir algunas funciones de Django a la sintaxis de Jinja2.
+ 
+auto_reload Indica si la plantilla se analiza cada vez que se refresca la página True o se guarda en caché una vez analizada False. El valor de esta opción suele ser DEBUG, porque cuando estamos creando la página y DEBUG = True  es necesario que la plantilla se analice cada vez que carguemos una  página. Así podemos ver los cambios que hemos realizado en nuestra  plantilla. Pero cuando el sitio web está en modo producción y DEBUG = False,  nos interesa guardar la plantilla analizada en una caché, así la página  web se carga más rápido y nuestro servidor consume menos memoria.
+ 
+Autoescape Si la variable es True, escapa de forma automática todo los caracteres html de las variables de Jinja. Es importante poner esta opción siempre a True para evitar que nos hagan Inyección html en nuestro sitio web.
+
+

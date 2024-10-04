@@ -9,9 +9,11 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Inicio</a>
           </li>
+          {% if user.is_staff %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'apps.libros:agregar_categoria' %}">Agregar categoria</a>
           </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Libros
@@ -23,14 +25,26 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{user.username }}
+            </a>
+            <ul class="dropdown-menu">
+              <form method="POST" action="{% url 'apps.blog_auth:cerrar_sesion' %}">
+                {% csrf_token %}
+                <button type="submit">Cerrar Sesion</button>
+              </form>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+          {% endif %}
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a class="nav-link" href="{% url 'apps.blog_auth:iniciar_sesion' %}">Iniciar sesion</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+       
       </div>
     </div>
   </nav>

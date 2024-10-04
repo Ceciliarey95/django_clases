@@ -7,11 +7,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+# ------ LOGIN -----
+
+LOGIN_URL = reverse_lazy('apps.blog_auth:iniciar_sesion')
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 # -------------------------------------------------------------------------------------
 ENV_SECRET_KEY = os.getenv("SECRET_KEY")

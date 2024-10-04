@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Categoria, Libro
 
@@ -9,7 +10,7 @@ from .models import Categoria, Libro
 # Create your views here.
 
 # ------- Categorias -----------------
-class CrearCategoria(CreateView):
+class CrearCategoria(LoginRequiredMixin, CreateView):
     model = Categoria
     fields = ['nombre']
     template_name = 'libros/agregar_categoria.html'

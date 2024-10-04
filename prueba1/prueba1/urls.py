@@ -20,6 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.urls import include, path
 
+
 from .views import HomeView
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path("", HomeView.as_view() , name='index' ),
     path("modulo1/", include('apps.modulo1.urls')),
     path("libros/", include('apps.libros.urls')),
+    path("users/", include('apps.blog_auth.urls'))
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
