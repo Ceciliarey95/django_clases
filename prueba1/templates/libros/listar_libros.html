@@ -5,6 +5,10 @@
 <title>Libros</title>
 {% endblock %}
 
+{% block navegacion %}
+{% include 'navegacion.html' %}
+{% endblock %}
+
 {% block contenido %}
 
 {% if libros %}
@@ -15,7 +19,7 @@
     <div class="card-body">
         <h5 class="card-title">{{ p.titulo }}</h5>
         <p class="card-text">{{ p.descripcion }}</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <a href="{% url 'apps.libros:libro' p.id %}" class="btn btn-primary">Leer más</a>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">Categoria: {{ p.categoria }}</li>

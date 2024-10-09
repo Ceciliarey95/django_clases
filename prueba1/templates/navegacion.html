@@ -1,50 +1,75 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+{% load static %}
+<nav class="navbar" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Inicio</a>
-          </li>
-          {% if user.is_staff %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'apps.libros:agregar_categoria' %}">Agregar categoria</a>
-          </li>
-          {% endif %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Libros
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_libro' %}">Crear</a></li>
-              <li><a class="dropdown-item" href="#"></a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{user.username }}
-            </a>
-            <ul class="dropdown-menu">
-              <form method="POST" action="{% url 'apps.blog_auth:cerrar_sesion' %}">
-                {% csrf_token %}
-                <button type="submit">Cerrar Sesion</button>
-              </form>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'apps.blog_auth:iniciar_sesion' %}">Iniciar sesion</a>
-          </li>
+        <a href="{% url 'index' %}">
+            <img src="{% static 'img/logo.png' %}" alt="" width="100" height="100">
+        </a>
+        <ul class="nav nav-underline">
+            {% if user.is_authenticated %}
+            <div class="list-group-item d-flex gap-3 py-3" aria-current="true">
+                <img src="{{ user.imagen.url }}" alt="perfil" width="40" height="40"
+                    class="rounded-circle flex-shrink-0">
+                <ul class="navbar-nav">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{user.username}}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item"
+                                    href="{% url 'apps.blog_auth:editar_perfil' user.pk %}">Modificar
+                                    Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'apps.blog_auth:cerrar_sesion' %}">Cerrar
+                                    sesión</a></li>
+                        </ul>
+                    </div>
+                </ul>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'apps.blog_auth:registrarse' %}">Registrarse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'apps.blog_auth:iniciar_sesion' %}">Iniciar Sesión</a>
+                </li>
+                {% endif %}
         </ul>
-       
-      </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Libros
+                    </button>
+                    <ul class="dropdown-menu"></ul>
+                    <li>
+                      <a href="{% url 'apps.libros:listar_libros' %}">Listar todos los libros</a>
+                   </li>
+                   {% for i in categorias %}
+                   <li>
+                    <a href="{% url 'apps.libros:listar_por_categoria' i.nombre %}">{{i.nombre}}</a>
+                   </li>
+                    {% endfor %}
+                </div>
+                {% if user.is_staff %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Colaborador
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_categoria' %}">Agregar
+                                categoria</a></li>
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_libro' %}">Agregar
+                                libro</a></li>       
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-  </nav>
+
+</nav>
