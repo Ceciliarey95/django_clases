@@ -40,6 +40,13 @@
 
             </div>
         </div>
+        <div class="mb-3 display-7" style="text-align: center"></div>
+            <p>Opiniones: {{opiniones.count}}</p>
+            {% include 'opiniones/listar_opiniones.html' %}
+        </div>
+        <div class="mb-3 display-7" style="text-align: center">
+            {% include 'opiniones/agregar_opinion.html' %}
+        </div>
     </section>
 
     {%endblock %}

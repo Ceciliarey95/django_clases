@@ -1,0 +1,29 @@
+{% for item in opiniones %}
+{% if user.is_authenticated and user.id == item.usuario.id %}
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Opinion
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="{% url 'apps.opiniones:modificar_opinion' item.pk %}">Modificar
+                opinion</a></li>
+        <li><a class="dropdown-item" href="{% url 'apps.opiniones:eliminar_opinion' item.pk %}">Eliminar
+                opinion</a></li>
+    </ul>
+</div>
+{% endif %}
+<div class="row justify-content-md-center ">
+    <div class="col-md-6">
+            <div class="d-flex gap-2 w-100 justify-content-between">
+                <div>
+                    <h6 class="mb-0">{{ item.usuario.username }}</h6>
+                    <p class="mb-0 text-break opacity-75">{{ item.texto }}</p>
+                </div>
+                <small class="opacity-50 text-nowrap">{{ item.fecha }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}

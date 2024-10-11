@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from .views import CrearCategoria, ActualizarCategoria, EliminarCategoria, CrearLibro, ActualizarLibro, ListarLibros, EliminarLibro, detalle_libro, listar_libro_por_categoria
+from .views import CrearCategoria, ActualizarCategoria, EliminarCategoria, CrearLibro, ActualizarLibro, ListarLibros, EliminarLibro, detalle_libro, listar_libro_por_categoria, ordenar_por
 
 app_name = 'apps.libros'
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path("eliminar_libro/<int:pk>", EliminarLibro.as_view(), name= 'eliminar_libro'),
     path("listar_libros/", ListarLibros.as_view(), name='listar_libros'),
     path("libro/<int:id>", detalle_libro, name = 'libro'),
-    path("listar_por_categoria/<str:categoria>", listar_libro_por_categoria, name='listar_por_categoria' )
+    path("listar_por_categoria/<str:categoria>", listar_libro_por_categoria, name='listar_por_categoria' ),
+    path("ordenar_por/", ordenar_por, name = 'ordenar_por')
 
 ]

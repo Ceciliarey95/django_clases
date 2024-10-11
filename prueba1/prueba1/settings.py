@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # Custom apps
-    'apps.modulo1',
-    'apps.libros'
+    'apps.libros',
+    'apps.opiniones'
 ]
 # -------------------------------------------------------------------------------------
 
