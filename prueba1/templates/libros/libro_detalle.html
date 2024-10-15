@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block titulo %}
-<title>{{libro.titulo}}</title>
-{%endblock %}
+<title>{{ libro.titulo }}</title>
+{% endblock %}
 
 {% block navegacion %}
 {% include 'navegacion.html' %}
@@ -12,41 +12,100 @@
 {% block contenido %}
 {% if user.is_staff %}
 <div class="dropdown">
-    <button class="btn btn-outline-secondary dropdown-toggle " type="button" id="dropdownMenuButton1"
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
         data-bs-toggle="dropdown" aria-expanded="false">Administrar</button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item" href="{% url 'apps.libros:actualizar_libro' libro.pk %}">Modificar libro</a></li>
         <li><a class="dropdown-item" href="{% url 'apps.libros:eliminar_libro' libro.pk %}">Eliminar libro</a></li>
     </ul>
-    {% endif %}
-    <section data-bs-version="5.1" class="image1 cid-tf6nPGwDQN" id="image1-q">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-12 col-lg-6">
-                    <div class="image-wrapper">
-                        {% if libro.imagen %}<img src="{{ libro.imagen.url }}" class="d-block w-100">
-                        {% else %}<img src="{% static 'img/img_libros/el_principito.jpeg' %}">{% endif %}
-                        <p class="mbr-description mbr-fonts-style pt-2 align-center display-4">{{libro.fecha_agregado}}</p>
-                    </div>
-                </div>
-                <div class="col-12 col-lg">
-                    <div class="text-wrapper">
-                        <h2 class="mbr-section-title mbr-fonts-style mb-3 display-5"><strong>{{libro.titulo}}</strong>
-                        </h2>
-                        <h4 class="mbr-section-title mbr-fonts-style mb-3 "><i>{{libro.autor}}</i></h4>
-                        <p class="mbr-text mbr-fonts-style display-7">{{libro.descripcion}}</p>
-                    </div>
-                </div>
+</div>
+{% endif %}
 
+<section class="image1 cid-tf6nPGwDQN" id="image1-q">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="image-wrapper">
+                    {% if libro.imagen %}
+                    <img src="{{ libro.imagen.url }}" class="d-block w-100">
+                    {% else %}
+                    <img src="{% static 'img/img_libros/el_principito.jpeg' %}">
+                    {% endif %}
+                    <p class="mbr-description mbr-fonts-style pt-2 align-center display-4" style="font-size: 0.9em;">{{ libro.fecha_agregado }}</p> <!-- Fecha más pequeña -->
+                </div>
+            </div>
+            <div class="col-12 col-lg">
+                <div class="text-wrapper" style="text-align: center;">
+                    <h2 class="mbr-section-title mbr-fonts-style mb-3 display-5"><strong>{{ libro.titulo }}</strong></h2>
+                    <h4 class="mbr-section-title mbr-fonts-style mb-3"><i>{{ libro.autor }}</i></h4>
+                    <p class="mbr-text mbr-fonts-style display-7">{{ libro.descripcion }}</p> 
+                </div>
             </div>
         </div>
-        <div class="mb-3 display-7" style="text-align: center"></div>
-            <p>Opiniones: {{opiniones.count}}</p>
-            {% include 'opiniones/listar_opiniones.html' %}
-        </div>
-        <div class="mb-3 display-7" style="text-align: center">
-            {% include 'opiniones/agregar_opinion.html' %}
-        </div>
-    </section>
+    </div>
 
-    {%endblock %}
+    <div class="opiniones-section" style="text-align: center; margin-top: 30px;">
+        <h3>Opiniones ({{ opiniones.count }})</h3>
+        <div class="opiniones-list" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            
+                {% include 'opiniones/listar_opiniones.html' %}
+            
+        </div>
+    </div>
+
+    <div class="mb-3 display-7" style="text-align: center; margin-top: 20px;">
+        <h4>Añadir tu opinión:</h4>
+        {% include 'opiniones/agregar_opinion.html' %}
+    </div>
+</section>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .image-wrapper img {
+        border-radius: 8px; /* Bordes redondeados para las imágenes */
+        max-width: 100%;
+        height: auto;
+    }
+
+    .text-wrapper {
+        background-color: #1c1c1c;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .dropdown-menu {
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
+
+    .dropdown-item {
+        color: #ffffff;
+    }
+
+    .dropdown-item:hover {
+        background-color: #4b6cb7; /* Color al pasar el mouse */
+    }
+
+    .opinion-card {
+        transition: transform 0.3s;
+        width: 100%; /* Hacer que las tarjetas ocupen el 100% del ancho */
+    }
+
+    .opinion-card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Centrar el input del comentario */
+    .form-input {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+{% endblock %}

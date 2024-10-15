@@ -10,36 +10,158 @@
 {% endblock %}
 
 {% block contenido %}
+<!-- Estilos personalizados para un diseño centrado y estilizado -->
+<style>
+    /* Fondo oscuro para la página */
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Estilos para el formulario de búsqueda */
+    form.d-flex {
+        margin-top: 2%;
+        display: flex;
+        justify-content: center;
+    }
+
+    form.d-flex input {
+        background-color: #1c1c1c;
+        border: 1px solid #444;
+        color: #ffffff;
+        width: 60%;
+        /* Ajusta el ancho del campo de búsqueda */
+        margin-right: 10px;
+    }
+
+    form.d-flex button {
+        background-color: #4b6cb7;
+        border: none;
+        color: #ffffff;
+        padding: 10px 20px;
+    }
+
+    /* Estilos para el formulario de ordenación */
+    form {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    form button {
+        background-color: #343a40;
+        color: #ffffff;
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+        background-color: #555;
+    }
+
+    /* Estilos para las tarjetas de libros */
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        /* Espacio entre las tarjetas */
+        margin-top: 30px;
+    }
+
+    .card {
+        background-color: #1c1c1c;
+        color: #ffffff;
+        border: 1px solid #343a40;
+        border-radius: 10px;
+        width: 300px;
+        /* Ajusta el tamaño de las tarjetas */
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Sombra sutil */
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        /* Efecto al pasar el mouse */
+    }
+
+    .card img {
+        width: 80%;
+        height: auto;
+        margin: 20px auto;
+        border-radius: 8px;
+    }
+
+    .card-body h5 {
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .card-body p {
+        color: #bdbdbd;
+        font-size: 14px;
+    }
+
+    .card-body a.btn-primary {
+        background-color: #4b6cb7;
+        border: none;
+        padding: 10px;
+    }
+
+    .card-body a.btn-primary:hover {
+        background-color: #3a539b;
+    }
+
+    /* Estilos para la lista de detalles de los libros */
+    .list-group-item {
+        background-color: #1c1c1c;
+        border-color: #343a40;
+        color: #ffffff;
+    }
+</style>
+
+<!-- Formulario de búsqueda centrado -->
 <form action="{% url 'apps.libros:listar_libros' %}" class="d-flex" role="search" method="get">
-    <input class="form-control me-2" style="height: 25%; width: 95%; margin-top: 2%;" type="search"
-        placeholder="Buscar libro" aria-label="Search" name="buscador">
-    <button class="btn-primary" style="height: 25%; margin-top: 2.5%;" type="submit">Buscar</button>
+    <input class="form-control me-2" type="search" placeholder="Buscar libro" aria-label="Search" name="buscador">
+    <button class="btn-primary" type="submit">Buscar</button>
 </form>
+
+<!-- Formulario de ordenación centrado -->
 <form method="GET" action="{% url 'apps.libros:ordenar_por' %}">
-    <button class="btn-primary" name="orden" type="submit" value="fecha">Ordenar por
-        fecha</button>
-    <button class="btn-primary" name="orden" type="submit" value="titulo">Ordenar por
-        título</button>
+    <button class="btn-primary" name="orden" type="submit" value="fecha">Ordenar por fecha</button>
+    <button class="btn-primary" name="orden" type="submit" value="titulo">Ordenar por título</button>
 </form>
+
+<!-- Sección de lista de libros centrada -->
 {% if libros %}
-<h1>Libros</h1>
-{% for p in libros %}
-<div class="card" style="width: 100%;">
-    <img src="{{ p.imagen.url }}" class="card-img-top" style="display: block; width: 25%;" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">{{ p.titulo }}</h5>
-        <p class="card-text">{{ p.descripcion }}</p>
-        <a href="{% url 'apps.libros:libro' p.id %}" class="btn btn-primary">Leer más</a>
+<h1 style="text-align: center; margin-top: 20px;">Libros</h1>
+<div class="card-container">
+    {% for p in libros %}
+    <div class="card">
+        <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.titulo }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ p.titulo }}</h5>
+            <p class="card-text">{{ p.descripcion|truncatechars:50 }}</p> <!-- Limita a 50 caracteres -->
+            <a href="{% url 'apps.libros:libro' p.id %}" class="btn btn-primary">Leer más</a>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Categoría: {{ p.categoria }}</li>
+            <li class="list-group-item">Autor: {{ p.autor }}</li>
+            <li class="list-group-item">Fecha de agregado: {{ p.fecha_agregado }}</li>
+        </ul>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Categoria: {{ p.categoria }}</li>
-        <li class="list-group-item">Autor: {{ p.autor }}</li>
-        <li class="list-group-item">Fecha de agregado: {{ p.fecha_agregado }}</li>
-    </ul>
+    {% endfor %}
 
 </div>
-{% endfor %}
+{% else %}
+<p style="text-align: center;">No se encontraron libros.</p>
 {% endif %}
 
+{% include 'genericos/paginador.html' %}
 
 {% endblock %}

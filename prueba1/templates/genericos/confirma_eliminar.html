@@ -1,15 +1,39 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
+<div class="container" style="margin-top: 20px;">
+    <h1 class="text-center text-white">Eliminar</h1>
 
-<h1>Eliminar</h1>
+    <div class="alert alert-warning text-center" style="background-color: #1c1c1c; border-color: #ffc107; color: #fff;" role="alert">
+        <p>¿Está seguro que desea eliminar este elemento?</p>
+    </div>
 
-<p>Seguro que desea eliminar?</p>
+    <form action="" method="POST" class="d-flex flex-column align-items-center">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="Sí, eliminar" style="width: 200px; margin-top: 10px;">
+    </form>
+    
+    <a href="{% url 'index' %}" class="btn btn-secondary" style="margin-top: 10px; width: 200px;">No, volver al inicio</a>
+</div>
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="submit" class="btn btn-primary" value="Si, eliminar">
-</form>
-<a href="{% url 'index' %}" class="btn btn-primary">No, volver al inicio</a>
+<style>
+    .container {
+        background-color: #1c1c1c; /* Fondo oscuro */
+        border-radius: 10px; /* Bordes redondeados */
+        padding: 20px; /* Espaciado interno */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+    }
+    h1 {
+        margin-bottom: 20px; /* Margen inferior */
+    }
+    .btn-danger {
+        background-color: #dc3545; /* Color rojo para eliminar */
+        border: none; /* Sin borde */
+    }
+    .btn-secondary {
+        background-color: #6c757d; /* Color gris para volver */
+        border: none; /* Sin borde */
+    }
+</style>
 
 {% endblock %}

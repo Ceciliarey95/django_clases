@@ -1,12 +1,82 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block titulo %}
+<title>Agregar categoria</title>
+{% endblock %}
+
+{% block navegacion %}
+{% include 'navegacion.html' %}
+{% endblock %}
+
 {% block contenido %}
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    .main-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Para centrar verticalmente */
+    }
+
+    .overlay {
+        background-color: #1c1c1c;
+        border: 1px solid #343a40;
+        border-radius: 8px;
+        max-width: 600px;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    p {
+        color: #bdbdbd;
+        margin-bottom: 20px;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4b6cb7;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        color: #ffffff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3a539b;
+    }
+
+    /* Estilo para los campos de formulario */
+    .form-control {
+        background-color: #1c1c1c;
+        color: #ffffff;
+        border: 1px solid #444;
+    }
+
+    label {
+        color: #ffffff;
+    }
+</style>
 
 <div class="main-container">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="overlay">
-            <h2>Agregar Categoria</h2>
+            <h2>Agregar Categoría</h2>
             <p>Ingrese los datos y presione el botón de guardar</p>
             <div>
                 {{ form.as_p }}

@@ -1,33 +1,65 @@
 {% load static %}
-<nav class="navbar" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+        <!-- Logo -->
         <a href="{% url 'index' %}">
-            <img src="{% static 'img/logo.png' %}" alt="" width="100" height="100">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" width="100" height="100">
         </a>
-        <ul class="nav nav-underline">
-            {% if user.is_authenticated %}
-            <div class="list-group-item d-flex gap-3 py-3" aria-current="true">
-                <img src="{{ user.imagen.url }}" alt="perfil" width="40" height="40"
-                    class="rounded-circle flex-shrink-0">
-                <ul class="navbar-nav">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ user.username }}
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item"
-                                    href="{% url 'apps.blog_auth:editar_perfil' user.pk %}">Modificar
-                                    Perfil</a></li>
-                            <li>
-                                <form method="post" action="{% url 'apps.blog_auth:cerrar_sesion' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </ul>
+        
+        <!-- Botón para el menú en pantallas pequeñas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido del menú -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <!-- Dropdown de libros -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="librosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Libros
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="librosDropdown">
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:listar_libros' %}">Listar todos los libros</a></li>
+                        {% for i in categorias %}
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:listar_por_categoria' i.nombre %}">{{ i.nombre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <!-- Opciones para colaboradores (solo staff) -->
+                {% if user.is_staff %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="colaboradorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Colaborador
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="colaboradorDropdown">
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_categoria' %}">Agregar categoría</a></li>
+                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_libro' %}">Agregar libro</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- Perfil de usuario y autenticación -->
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'img/logo.png' %}" alt="perfil" width="40" height="40" class="rounded-circle me-2">
+                        {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{% url 'apps.blog_auth:editar_perfil' user.pk %}">Modificar Perfil</a></li>
+                        <li>
+                            <form method="post" action="{% url 'apps.blog_auth:cerrar_sesion' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'apps.blog_auth:registrarse' %}">Registrarse</a>
@@ -36,44 +68,7 @@
                     <a class="nav-link" href="{% url 'apps.blog_auth:iniciar_sesion' %}">Iniciar Sesión</a>
                 </li>
                 {% endif %}
-        </ul>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Libros
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'apps.libros:listar_libros' %}">Listar todos los libros</a>
-                        </li>
-                        {% for i in categorias %}
-                        <li>
-                            <a class="dropdown-item" href="{% url 'apps.libros:listar_por_categoria' i.nombre %}">{{ i.nombre }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-        
-                {% if user.is_staff %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Colaborador
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_categoria' %}">Agregar categoría</a></li>
-                        <li><a class="dropdown-item" href="{% url 'apps.libros:agregar_libro' %}">Agregar libro</a></li>
-                    </ul>
-                </li>
-                {% endif %}
             </ul>
         </div>
     </div>
-
 </nav>

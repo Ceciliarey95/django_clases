@@ -1,0 +1,14 @@
+/* estilos.css */
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0; /* Elimina márgenes por defecto */
+    background-color: #1c1c1c; /* Fondo oscuro */
+    color: #ffffff; /* Texto blanco */
+    font-family: 'Catamaran', sans-serif; /* Fuente utilizada */
+}
+
+.text-light {
+    color: #d3d3d3; /* Color de texto claro */
+}

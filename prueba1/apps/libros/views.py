@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 from mixins.custom_test_mixin import CustomTestMixin
 
@@ -57,6 +58,7 @@ class ListarLibros(ListView):
     model = Libro
     template_name = 'libros/listar_libros.html'
     context_object_name = 'libros'
+    paginate_by         = 3
 
     def get_context_data(self) :
         context=super().get_context_data()
@@ -77,9 +79,18 @@ class ListarLibros(ListView):
 def listar_libro_por_categoria(request, categoria):
     categoria_db = Categoria.objects.filter(nombre = categoria)
     libros = Libro.objects.filter(categoria = categoria_db[0].id)
+    # Paginación
+    paginator = Paginator(libros, 3)  # Muestra 3 libros por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud
+    libros_paginados = paginator.get_page(page_number)  # Obtiene los libros para la página actual
+
     template_name = 'libros/listar_libros.html'
     context = {
-        'libros' : libros
+        'libros' : libros_paginados,
+        'page_obj': libros_paginados,  # Usa los libros paginados en el contexto(para el paginador)
+        'paginator': paginator,  # También pasa el paginator para obtener información de paginación
+        'is_paginated': paginator.num_pages > 1,# Determina si la paginación es necesaria
+        
     }
     return render(request, template_name=template_name, context=context)
 
@@ -108,17 +119,27 @@ def detalle_libro(request,id):
     return render(request, template_name=template_name,context=context)
 
 def ordenar_por(request):
-    orden = request.GET.get('orden',' ')
+    orden = request.GET.get('orden', ' ')
+    libros = None
 
     if orden == 'fecha':
         libros = Libro.objects.order_by('fecha_agregado')
     elif orden == 'titulo':
         libros = Libro.objects.order_by('titulo')
-    else : 
+    else:
         libros = Libro.objects.all()
-    
+
+    # Paginación
+    paginator = Paginator(libros, 3)  # Muestra 3 libros por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud
+    libros_paginados = paginator.get_page(page_number)  # Obtiene los libros para la página actual
+
     template_name = 'libros/listar_libros.html'
     context = {
-        'libros' : libros
+        'libros': libros_paginados,
+        'page_obj': libros_paginados,  # Usa los libros paginados en el contexto(para el paginador)
+        'paginator': paginator,  # También pasa el paginator para obtener información de paginación
+        'is_paginated': paginator.num_pages > 1,# Determina si la paginación es necesaria
+        
     }
     return render(request, template_name, context)
