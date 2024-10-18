@@ -20,7 +20,6 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 # -------------------------------------------------------------------------------------
-ENV_SECRET_KEY = os.getenv("SECRET_KEY")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 # -------------------------------------------------------------------------------------
@@ -29,7 +28,7 @@ DEBUG = True
 
 # -------------------------------------------------------------------------------------
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['host']
 
 # -------------------------------------------------------------------------------------
 
@@ -89,7 +88,8 @@ DATABASES = {
         "NAME": NAME_DB,
         "USER": USER_DB,
         "PASSWORD": PASSWORD_DB,
-        "PORT": '3306'
+        "PORT": '3306',
+        "HOST" : 'host'
     }
 }
 # -------------------------------------------------------------------------------------
@@ -123,6 +123,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS= BASE_DIR / "static" ,
+STATIC_ROOT = "staticfiles/"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
